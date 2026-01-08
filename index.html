@@ -376,6 +376,91 @@
     .memory-card:hover {
       transform: translateY(-5px);
     }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .scrapbook-container {
+        height: auto;
+        min-height: 400px;
+        width: 95%;
+      }
+
+      .polaroid {
+        width: 120px !important;
+        height: 160px !important;
+        margin: 10px;
+      }
+
+      .puzzle-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+        max-width: 250px;
+      }
+
+      .puzzle-piece {
+        width: 100%;
+        height: 70px;
+        font-size: 16px;
+      }
+
+      .photobooth-frame {
+        max-width: 80vw;
+      }
+
+      .title-handwriting {
+        font-size: 24px;
+      }
+
+      .handwriting {
+        font-size: 14px;
+      }
+
+      .floating-photo {
+        width: 30px;
+        height: 30px;
+      }
+
+      .heart {
+        font-size: 1rem;
+      }
+
+      .scroll-indicator {
+        font-size: 14px;
+        padding: 10px 20px;
+      }
+
+      .memory-card {
+        padding: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .scrapbook-container {
+        min-height: 300px;
+      }
+
+      .polaroid {
+        width: 100px !important;
+        height: 140px !important;
+      }
+
+      .puzzle-container {
+        max-width: 200px;
+      }
+
+      .puzzle-piece {
+        height: 60px;
+        font-size: 14px;
+      }
+
+      .title-handwriting {
+        font-size: 20px;
+      }
+
+      .handwriting {
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body class="coquette-bg text-pink-800">
