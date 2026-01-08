@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday My Love 💕</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Indie+Flower&display=swap');
+
+    body {
+      font-family: 'Indie Flower', cursive;
+      scroll-behavior: smooth;
+      background: repeating-linear-gradient(
+        45deg,
+        #4a3c28 0px,
+        #4a3c28 10px,
+        #5d4a35 10px,
+        #5d4a35 20px,
+        #6b5b3a 20px,
+        #6b5b3a 30px,
+        #4a3c28 30px,
+        #4a3c28 40px
+      );
+      min-height: 100vh;
+    }
+
+    .coquette-bg {
+      background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 25%, #f48fb1 50%, #ec407a 75%, #e91e63 100%);
+    }
+
+    .typewriter {
+      overflow: hidden;
+      border-right: 2px solid #ec407a;
+      white-space: nowrap;
+      animation: typing 4s steps(50, end), blink-caret 0.75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: #ec407a; }
+    }
+
+    .floating-hearts {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      color: rgba(236, 64, 122, 0.6);
+      font-size: 1.5rem;
+      animation: float-hearts 8s infinite linear;
+    }
+
+    @keyframes float-hearts {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    .falling-photo {
+      position: fixed;
+      top: -100px;
+      z-index: -1;
+      pointer-events: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 0;
+      }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .scrapbook-container {
+      width: 90%;
+      max-width: 1200px;
+      height: 700px;
+      margin: 0 auto;
+      background: #fffbf0;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(0,0,0,0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0,0,0,0.03) 0%, transparent 50%);
+      border-radius: 8px;
+      box-shadow: 
+        0 0 0 20px rgba(139, 69, 19, 0.3),
+        0 0 0 40px rgba(139, 69, 19, 0.2),
+        0 0 0 60px rgba(139, 69, 19, 0.1),
+        0 20px 60px rgba(0,0,0,0.3);
+      position: relative;
+      display: flex;
+      overflow: hidden;
+      perspective: 1000px;
+    }
+
+    .scrapbook-spine {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 20px;
+      background: linear-gradient(to bottom, #8b4513, #654321, #8b4513);
+      transform: translateX(-50%);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+      z-index: 10;
+    }
+
+    .page-left, .page-right {
+      flex: 1;
+      padding: 40px;
+      position: relative;
+      backface-visibility: hidden;
+    }
+
+    .page-left {
+      border-right: 1px solid rgba(139, 69, 19, 0.3);
+      transform-origin: right center;
+      transform: rotateY(-90deg);
+      opacity: 0;
+    }
+
+    .page-right {
+      border-left: 1px solid rgba(139, 69, 19, 0.3);
+      transform-origin: left center;
+      transform: rotateY(90deg);
+      opacity: 0;
+    }
+
+    .scrapbook-container.open .page-left {
+      animation: page-open-left 1.5s ease-out forwards;
+    }
+
+    .scrapbook-container.open .page-right {
+      animation: page-open-right 1.5s ease-out forwards;
+    }
+
+    .polaroid-photo {
+      background: white;
+      padding: 15px;
+      border-radius: 3px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+      display: inline-block;
+      transform-origin: center;
+    }
+
+    .polaroid-photo img {
+      width: 100%;
+      height: auto;
+      border-radius: 2px;
+    }
+
+    .polaroid-photo:nth-child(odd) {
+      transform: rotate(-2deg);
+    }
+
+    .polaroid-photo:nth-child(even) {
+      transform: rotate(1deg);
+    }
+
+    .handwriting {
+      font-family: 'Caveat', cursive;
+      font-size: 18px;
+      color: #5d4a35;
+      line-height: 1.4;
+    }
+
+    .title-handwriting {
+      font-family: 'Caveat', cursive;
+      font-size: 32px;
+      color: #8b4513;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    @keyframes page-open-left {
+      0% {
+        transform: rotateY(-90deg);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: rotateY(0deg);
+        opacity: 1;
+      }
+    }
+
+    @keyframes page-open-right {
+      0% {
+        transform: rotateY(90deg);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: rotateY(0deg);
+        opacity: 1;
+      }
+    }
+
+    .secret-overlay {
+      position: relative;
+      cursor: none;
+    }
+
+    .secret-overlay::before {
+      content: '';
+      position: fixed;
+      top: var(--mouse-y, -150px);
+      left: var(--mouse-x, -150px);
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, transparent 0%, transparent 60%, rgba(0,0,0,0.95) 100%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1000;
+      transition: none;
+      opacity: 0;
+    }
+
+    .secret-overlay.active::before {
+      opacity: 1;
+    }
+
+    .polaroid {
+      background: white;
+      padding: 12px;
+      border-radius: 4px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      transform-origin: center;
+      transition: transform 0.3s ease;
+    }
+
+    .polaroid:hover {
+      transform: scale(1.05) rotate(0deg) !important;
+    }
+
+    .polaroid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+
+    .polaroid h3 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 18px;
+      color: #e91e63;
+      text-align: center;
+      margin-top: 8px;
+      margin-bottom: 0;
+    }
+
+    .puzzle-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .puzzle-piece {
+      width: 100%;
+      height: 90px;
+      background-size: 270px 270px;
+      background-position: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: rgba(236, 64, 122, 0.9);
+      position: relative;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .puzzle-piece:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .puzzle-piece.empty {
+      background: #f8f9fa;
+      border: 2px dashed #ec407a;
+      box-shadow: inset 0 0 10px rgba(236, 64, 122, 0.2);
+    }
+
+    .photobooth-frame {
+      position: relative;
+      border: 8px solid #ec407a;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .photobooth-frame::before {
+      content: '💕 Happy Birthday 💕';
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(236, 64, 122, 0.9);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      z-index: 5;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    .scroll-indicator {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(236, 64, 122, 0.9);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: bold;
+      animation: bounce 2s infinite;
+      z-index: 1000;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40% { transform: translateX(-50%) translateY(-10px); }
+      60% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    .fade-in {
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .memory-card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .memory-card:hover {
+      transform: translateY(-5px);
+    }
+  </style>
+</head>
+<body class="coquette-bg text-pink-800">
+
+  <!-- Landing Section -->
+  <section id="landing" class="min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
+    <!-- Falling Photos Background -->
+    <div id="fallingPhotos" class="fixed inset-0 pointer-events-none z-[-1]"></div>
+
+    <div class="text-center z-10 px-4">
+      <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg opacity-0 fade-in" id="greeting">
+        Hai Sayang!
+      </h1>
+      <button id="openBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-110 shadow-lg">
+        💕 Buka Sekarang 💕
+      </button>
+    </div>
+  </section>
+
+  <!-- Scroll Indicator -->
+  <div id="scrollIndicator" class="scroll-indicator hidden">
+    Scroll sampai habis ya sayang 💕
+  </div>
+
+  <!-- Birthday Message Section -->
+  <section id="birthday" class="min-h-screen flex items-center justify-center py-20 relative">
+    <div class="floating-hearts" id="floatingHearts"></div>
+    <div class="max-w-4xl mx-auto text-center px-4">
+      <h2 class="text-5xl md:text-7xl font-bold text-white mb-12 drop-shadow-lg">
+        Happy Birthday Sayang
+      </h2>
+      <div class="bg-white/20 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl">
+        <div class="text-2xl md:text-3xl text-white leading-relaxed">
+          <span class="typewriter" id="typewriterText">
+            Untuk Pacar aku yang paling cantik dan manis di dunia...
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Love Letter Section -->
+  <section id="loveletter" class="min-h-screen py-20 bg-transparent">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-5xl md:text-7xl font-bold text-center text-pink-600 mb-16">
+        Surat Cinta Untukmu
+      </h2>
+
+      <div class="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border-4 border-pink-200">
+        <div class="text-center mb-8">
+          <div class="text-6xl mb-4">💌</div>
+          <h3 class="text-2xl font-bold text-pink-600 mb-6">My Dearest Love,</h3>
+        </div>
+
+        <div class="space-y-6 text-lg leading-relaxed text-gray-700">
+          <p>
+            Hari ini adalah hari yang sangat spesial bagimu, dan aku ingin mengungkapkan
+            betapa berartinya dirimu dalam hidupku. Setiap hari bersamamu adalah petualangan
+            yang indah, penuh dengan tawa, cinta, dan kenangan yang tak terlupakan.
+          </p>
+
+          <p>
+            Kamu adalah cahaya yang menerangi hari-hariku, bintang yang membimbingku di malam hari,
+            dan cinta sejati yang selalu aku cari. Terima kasih telah menjadi bagian dari hidupku,
+            dan aku berjanji akan selalu mencintaimu dengan sepenuh hati.
+          </p>
+
+          <p>
+            Di hari ulang tahunmu ini, aku berharap semua impianmu tercapai, semua harapanmu terwujud,
+            dan semua cintamu dibalas dengan sepenuhnya. Kamu layak mendapatkan yang terbaik di dunia ini.
+          </p>
+
+          <div class="text-center mt-8">
+            <p class="text-2xl font-bold text-pink-600">Forever Yours,</p>
+            <p class="text-xl text-pink-500 mt-2">[Nama Kamu]</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Memories Section -->
+  <section id="memories" class="min-h-screen py-20 bg-transparent">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-5xl md:text-7xl font-bold text-center text-pink-600 mb-16">
+        Kenangan Kita Bersama
+      </h2>
+
+      <div class="flex flex-wrap justify-center gap-6">
+        <div class="polaroid w-48 h-64 mx-auto" style="transform: rotate(-3deg);">
+          <img src="images/img1.jpg" alt="Memory 1">
+          <h3>Pertemuan Pertama</h3>
+        </div>
+
+        <div class="polaroid w-40 h-56 mx-auto" style="transform: rotate(2deg);">
+          <img src="images/img2.jpg" alt="Memory 2">
+          <h3>Date Night</h3>
+        </div>
+
+        <div class="polaroid w-52 h-68 mx-auto" style="transform: rotate(-1deg);">
+          <img src="images/img3.jpg" alt="Memory 3">
+          <h3>Petualangan Seru</h3>
+        </div>
+
+        <div class="polaroid w-44 h-60 mx-auto" style="transform: rotate(4deg);">
+          <img src="images/img4.jpg" alt="Memory 4">
+          <h3>Momen Spesial</h3>
+        </div>
+
+        <div class="polaroid w-48 h-64 mx-auto" style="transform: rotate(-2deg);">
+          <img src="images/img5.jpg" alt="Memory 5">
+          <h3>Kehidupan Sehari-hari</h3>
+        </div>
+
+        <div class="polaroid w-40 h-56 mx-auto" style="transform: rotate(1deg);">
+          <img src="images/img6.jpg" alt="Memory 6">
+          <h3>Masa Depan Kita</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Album Book Section -->
+  <section id="album" class="min-h-screen py-20 bg-transparent">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h2 class="title-handwriting mb-16">
+        Album Kita
+      </h2>
+
+      <div class="scrapbook-container" id="scrapbook">
+        <div class="scrapbook-spine"></div>
+        
+        <div class="page-left">
+        </div>
+        
+        <div class="page-right">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Secret Message Section -->
+  <section id="secret" class="min-h-screen py-20 bg-black relative secret-overlay">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h2 class="text-5xl md:text-7xl font-bold text-white mb-16">
+        Cari Pesan Rahasia
+      </h2>
+      <p class="text-xl text-gray-300 mb-8">Gerakkan mouse-mu untuk menemukan pesan tersembunyi...</p>
+
+      <div class="relative py-20">
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="text-center max-w-2xl">
+            <div class="text-6xl mb-8">💕</div>
+            <h3 class="text-4xl font-bold text-pink-400 mb-4">I Love You Forever</h3>
+            <p class="text-xl text-pink-300">
+              Kamu adalah segalanya bagiku. Setiap hari bersamamu adalah berkah terbesar.
+              Aku mencintaimu lebih dari kata-kata bisa ungkapkan. Happy Birthday, my love! 🎉
+            </p>
+            <div class="mt-8 grid grid-cols-2 gap-4 max-w-md mx-auto">
+              <img src="images/img7.jpg" alt="Secret 1" class="rounded-lg shadow-lg">
+              <img src="images/img6.jpg" alt="Secret 2" class="rounded-lg shadow-lg">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Puzzle Game Section -->
+  <section id="puzzle" class="min-h-screen py-20 bg-transparent">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h2 class="text-5xl md:text-7xl font-bold text-pink-600 mb-16">
+        Puzzle Cinta Kita
+      </h2>
+
+      <div class="bg-white rounded-3xl p-8 shadow-2xl">
+        <div class="puzzle-container" id="puzzleContainer">
+          <!-- Puzzle pieces will be generated here -->
+        </div>
+
+        <div class="mt-8">
+          <p class="text-lg text-pink-600 mb-4" id="puzzleStatus">Susun potongan foto kita!</p>
+          <div class="flex justify-center gap-4">
+            <button id="shuffleBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-full transition-colors">
+              🔀 Acak Ulang
+            </button>
+            <button id="hintBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full transition-colors">
+              💡 Petunjuk
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photobooth Section -->
+  <section id="photobooth" class="min-h-screen py-20 bg-transparent">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h2 class="text-5xl md:text-7xl font-bold text-pink-600 mb-16">
+        Photobooth Ceria
+      </h2>
+
+      <div class="bg-white rounded-3xl p-8 shadow-2xl">
+        <div class="photobooth-frame mx-auto max-w-md mb-8">
+          <video id="video" class="w-full rounded-lg" autoplay muted></video>
+        </div>
+
+        <div class="flex justify-center gap-4">
+          <button id="captureBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-full transition-colors disabled:opacity-50" disabled>
+            📸 Ambil Foto (3 detik)
+          </button>
+          <button id="downloadBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full transition-colors hidden">
+            💾 Download Foto
+          </button>
+        </div>
+
+        <div id="countdown" class="text-6xl font-bold text-pink-600 mt-4 hidden">3</div>
+      </div>
+
+      <canvas id="canvas" class="hidden"></canvas>
+    </div>
+  </section>
+
+  <!-- Galaxy Section (Final) -->
+  <section id="galaxy" class="min-h-screen">
+    <div class="text-center py-20">
+      <h2 class="text-5xl md:text-7xl font-bold text-white mb-8">
+        Hadiah Terakhir
+      </h2>
+      <a href="galaxy.html" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-110 shadow-lg inline-block">
+        🌌 Masuk ke Galaksi Cinta 🌌
+      </a>
+    </div>
+  </section>
+
+  <!-- Audio Element -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="sound.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Floating Hearts
+    function createFloatingHearts() {
+      const heartsContainer = document.getElementById('floatingHearts');
+
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '💖';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDelay = Math.random() * 8 + 's';
+        heart.style.fontSize = (Math.random() * 1 + 1) + 'rem';
+
+        heartsContainer.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 8000);
+      }, 1000);
+    }
+
+    // Greeting Animation
+    function animateGreeting() {
+      const greeting = document.getElementById('greeting');
+      setTimeout(() => {
+        greeting.classList.remove('opacity-0');
+      }, 1000);
+    }
+
+    // Open Button Functionality
+    document.getElementById('openBtn').addEventListener('click', () => {
+      const music = document.getElementById('bgMusic');
+      music.play().catch(console.error);
+
+      document.getElementById('scrollIndicator').classList.remove('hidden');
+      document.getElementById('birthday').scrollIntoView({ behavior: 'smooth' });
+    });
+
+
+
+    // Flashlight Effect
+    const secretSection = document.getElementById('secret');
+    const overlay = document.querySelector('.secret-overlay');
+
+    secretSection.addEventListener('mouseenter', () => {
+      overlay.classList.add('active');
+    });
+
+    secretSection.addEventListener('mouseleave', () => {
+      overlay.classList.remove('active');
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (overlay.classList.contains('active')) {
+        // Update CSS custom properties for ::before positioning
+        overlay.style.setProperty('--mouse-x', (e.clientX - 150) + 'px');
+        overlay.style.setProperty('--mouse-y', (e.clientY - 150) + 'px');
+      }
+    });
+
+    // Enhanced Puzzle Game
+    let puzzlePieces = [];
+    let emptyIndex = 8;
+    let originalOrder = [];
+
+    function initializePuzzle() {
+      const container = document.getElementById('puzzleContainer');
+      container.innerHTML = '';
+
+      // Create 3x3 grid (8 pieces + 1 empty)
+      for (let i = 0; i < 9; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'puzzle-piece';
+
+        if (i < 8) {
+          piece.style.backgroundImage = 'url(images/img1.jpg)';
+          piece.style.backgroundPosition = `${(i % 3) * -90}px ${Math.floor(i / 3) * -90}px`;
+          piece.textContent = i + 1;
+          piece.addEventListener('click', () => movePuzzlePiece(i));
+          originalOrder.push(i);
+        } else {
+          piece.classList.add('empty');
+        }
+
+        puzzlePieces.push(piece);
+        container.appendChild(piece);
+      }
+    }
+
+    function movePuzzlePiece(index) {
+      const row = Math.floor(index / 3);
+      const col = index % 3;
+      const emptyRow = Math.floor(emptyIndex / 3);
+      const emptyCol = emptyIndex % 3;
+
+      if ((Math.abs(row - emptyRow) === 1 && col === emptyCol) ||
+          (Math.abs(col - emptyCol) === 1 && row === emptyRow)) {
+        // Swap pieces
+        [puzzlePieces[index], puzzlePieces[emptyIndex]] = [puzzlePieces[emptyIndex], puzzlePieces[index]];
+        emptyIndex = index;
+
+        updatePuzzleDisplay();
+        checkPuzzleWin();
+      }
+    }
+
+    function updatePuzzleDisplay() {
+      const container = document.getElementById('puzzleContainer');
+      container.innerHTML = '';
+      puzzlePieces.forEach(piece => container.appendChild(piece));
+    }
+
+    function checkPuzzleWin() {
+      const isWin = puzzlePieces.every((piece, index) => {
+        if (index === 8) return piece.classList.contains('empty');
+        return piece.textContent == index + 1;
+      });
+
+      if (isWin) {
+        document.getElementById('puzzleStatus').textContent = '🎉 Selamat! Puzzle berhasil disusun! 💕';
+        createConfetti();
+      }
+    }
+
+    function shufflePuzzle() {
+      // More sophisticated shuffle
+      for (let i = 0; i < 1000; i++) {
+        const randomIndex = Math.floor(Math.random() * 8);
+        movePuzzlePiece(randomIndex);
+      }
+      document.getElementById('puzzleStatus').textContent = 'Susun potongan foto kita!';
+    }
+
+    function createConfetti() {
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.style.position = 'fixed';
+        confetti.style.width = '10px';
+        confetti.style.height = '10px';
+        confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.top = '-10px';
+        confetti.style.zIndex = '9999';
+        confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite`;
+
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 5000);
+      }
+    }
+
+    function showHint() {
+      puzzlePieces.forEach((piece, index) => {
+        if (!piece.classList.contains('empty')) {
+          const originalText = piece.textContent;
+          piece.textContent = index + 1;
+          piece.style.color = '#fff';
+          piece.style.backgroundColor = 'rgba(236, 64, 122, 0.8)';
+          setTimeout(() => {
+            piece.textContent = originalText;
+            piece.style.color = 'rgba(236, 64, 122, 0.9)';
+            piece.style.backgroundColor = '';
+          }, 2000);
+        }
+      });
+    }
+
+    document.getElementById('shuffleBtn').addEventListener('click', shufflePuzzle);
+    document.getElementById('hintBtn').addEventListener('click', showHint);
+
+    // Photobooth with Countdown
+    let stream = null;
+    let countdownInterval = null;
+
+    async function initializeCamera() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        document.getElementById('video').srcObject = stream;
+        document.getElementById('captureBtn').disabled = false;
+      } catch (error) {
+        console.error('Error accessing camera:', error);
+        alert('Tidak dapat mengakses kamera. Pastikan memberikan izin akses kamera.');
+      }
+    }
+
+    function startCountdown() {
+      let count = 3;
+      const countdownEl = document.getElementById('countdown');
+      const captureBtn = document.getElementById('captureBtn');
+
+      countdownEl.classList.remove('hidden');
+      countdownEl.textContent = count;
+      captureBtn.disabled = true;
+
+      countdownInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countdownEl.textContent = count;
+        } else {
+          clearInterval(countdownInterval);
+          countdownEl.classList.add('hidden');
+          takePhoto();
+        }
+      }, 1000);
+    }
+
+    function takePhoto() {
+      const video = document.getElementById('video');
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      ctx.drawImage(video, 0, 0);
+
+      // Add frame
+      ctx.strokeStyle = '#ec407a';
+      ctx.lineWidth = 16;
+      ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+      // Add text
+      ctx.fillStyle = '#ec407a';
+      ctx.font = 'bold 24px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('💕 Happy Birthday 💕', canvas.width / 2, 40);
+
+      const link = document.createElement('a');
+      link.download = `birthday-photo-${Date.now()}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+
+      document.getElementById('downloadBtn').classList.remove('hidden');
+      document.getElementById('captureBtn').disabled = false;
+    }
+
+    document.getElementById('captureBtn').addEventListener('click', startCountdown);
+
+    // Falling Photos Animation
+    function createFallingPhotos() {
+      const container = document.getElementById('fallingPhotos');
+      const photos = ['images/img1.jpg', 'images/img2.jpg', 'images/img3.jpg', 'images/img4.jpg', 'images/img5.jpg'];
+
+      setInterval(() => {
+        const photo = document.createElement('img');
+        photo.className = 'falling-photo';
+        photo.src = photos[Math.floor(Math.random() * photos.length)];
+
+        // Randomize properties
+        const size = 40 + Math.random() * 40; // 40-80px
+        const left = Math.random() * 100; // 0-100vw
+        const duration = 8 + Math.random() * 8; // 8-16s
+        const delay = Math.random() * 5; // 0-5s
+
+        photo.style.width = size + 'px';
+        photo.style.height = size + 'px';
+        photo.style.left = left + 'vw';
+        photo.style.animationDuration = duration + 's';
+        photo.style.animationDelay = delay + 's';
+
+        container.appendChild(photo);
+
+        // Remove photo when animation ends
+        setTimeout(() => {
+          if (photo.parentNode) {
+            photo.parentNode.removeChild(photo);
+          }
+        }, (duration + delay) * 1000 + 1000);
+      }, 2000); // Create new photo every 2 seconds
+    }
+
+    // Scrapbook functionality
+    const scrapbookPages = [
+      {
+        leftPhotos: ['images/img1.jpg', 'images/img2.jpg'],
+        rightPhotos: ['images/img3.jpg', 'images/img4.jpg']
+      },
+      {
+        leftPhotos: ['images/img5.jpg', 'images/img6.jpg'],
+        rightPhotos: []
+      }
+    ];
+
+    let currentPage = 0;
+    let isBookOpen = false;
+
+    function initializeScrapbook() {
+      const scrapbook = document.getElementById('scrapbook');
+
+      scrapbook.addEventListener('click', (e) => {
+        if (!isBookOpen) {
+          // Open the book
+          scrapbook.classList.add('open');
+          isBookOpen = true;
+          updatePageContent();
+        } else if (e.target.closest('.polaroid-photo')) {
+          // Turn to next page when clicking photo
+          scrapbook.classList.remove('open');
+          setTimeout(() => {
+            currentPage = (currentPage + 1) % scrapbookPages.length;
+            updatePageContent();
+            scrapbook.classList.add('open');
+          }, 1500); // Wait for close animation
+        }
+      });
+    }
+
+    function updatePageContent() {
+      const pageLeft = document.querySelector('.page-left');
+      const pageRight = document.querySelector('.page-right');
+
+      const page = scrapbookPages[currentPage];
+
+      pageLeft.innerHTML = `
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 20px;">
+          ${page.leftPhotos.map(src => `
+            <div class="polaroid-photo" style="width: 140px;">
+              <img src="${src}" alt="Memory">
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      if (page.rightPhotos.length > 0) {
+        pageRight.innerHTML = `
+          <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 20px;">
+            ${page.rightPhotos.map(src => `
+              <div class="polaroid-photo" style="width: 140px;">
+                <img src="${src}" alt="Memory">
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        pageRight.innerHTML = `
+          <div style="display: flex; justify-content: center; align-items: center; height: 100%; padding: 20px;">
+            <p class="handwriting" style="font-size: 24px; text-align: center;">Akhir dari album kita. Klik foto untuk kembali ke awal 💕</p>
+          </div>
+        `;
+      }
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', () => {
+      createFallingPhotos();
+      createFloatingHearts();
+      animateGreeting();
+      initializePuzzle();
+      shufflePuzzle();
+      initializeCamera();
+      initializeScrapbook();
+    });
+
+    // Cleanup
+    window.addEventListener('beforeunload', () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+      }
+    });
+  </script>
+
+  <style>
+    @keyframes fall {
+      to { transform: translateY(100vh) rotate(720deg); }
+    }
+  </style>
+</body>
+</html>

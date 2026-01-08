@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Sweet Seventeen - Love Message</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      color: white;
+      padding: 2rem;
+      max-width: 800px;
+      animation: fadeIn 2s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .title {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .message {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 3rem;
+      background: rgba(255,255,255,0.1);
+      padding: 2rem;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    .button {
+      background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .hearts {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      color: rgba(255,255,255,0.3);
+      font-size: 2rem;
+      animation: float 6s infinite linear;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); }
+      100% { transform: translateY(-100px) rotate(360deg); }
+    }
+
+    .date {
+      font-size: 1.1rem;
+      margin-top: 2rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+
+  <div class="container">
+    <h1 class="title">Happy Sweet Seventeen My Love 💖</h1>
+    <h2 class="subtitle">A Special Message for You</h2>
+
+    <div class="message">
+      <p>Dear [Nama Pacar],</p>
+      <br>
+      <p>Selamat ulang tahun yang ke-17! 🎉</p>
+      <p>Hari ini adalah hari spesial untukmu, dan aku ingin mengucapkan selamat dengan cara yang istimewa.</p>
+      <br>
+      <p>Kamu adalah bintang di langit hidupku, yang selalu bersinar terang dan membuat hari-hariku lebih indah.</p>
+      <p>Terima kasih telah menjadi bagian dari hidupku, dan aku berharap kita bisa terus bersama melewati banyak momen indah lainnya.</p>
+      <br>
+      <p>I Love You More Than Words Can Say 💕</p>
+      <br>
+      <p>From: [Nama Kamu]</p>
+    </div>
+
+    <a href="galaxy.html" class="button">Lihat Hadiah Spesial 🌌✨</a>
+
+    <div class="date">09/01/2026</div>
+  </div>
+
+  <script>
+    // Create floating hearts animation
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.innerHTML = '💖';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDelay = Math.random() * 6 + 's';
+      heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+      document.getElementById('hearts').appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 6000);
+    }
+
+    // Create hearts every 300ms
+    setInterval(createHeart, 300);
+
+    // Add some initial hearts
+    for (let i = 0; i < 10; i++) {
+      setTimeout(createHeart, i * 200);
+    }
+  </script>
+</body>
+</html></content>
+<parameter name="filePath">c:\Users\user\OneDrive\문서\for asa 2\Galaxy-love\index.html
