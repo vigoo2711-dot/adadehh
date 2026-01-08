@@ -438,4 +438,42 @@ body:not(.landscape-warning-active) #container canvas {
   40% { transform: rotate(-18deg); }
   100% { transform: rotate(-18deg); }
 >>>>>>> 9502ce0db30f9420a500a663222084659d2848f2
+}
+
+/* Responsive adjustments for galaxy effect */
+@media (max-width: 768px) {
+  html, body {
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto; /* Allow scrolling on mobile */
+  }
+  * {
+    overflow: visible; /* Reset overflow for mobile */
+  }
+  #container {
+    position: relative; /* Change to relative for mobile scrolling */
+    width: 100%;
+    height: 100vh;
+  }
+  canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media (min-width: 769px) {
+  html, body {
+    overflow: hidden; /* Keep hidden for desktop */
+  }
+  * {
+    overflow: hidden;
+  }
+  #container {
+    position: fixed;
+  }
+  canvas {
+    position: fixed;
+  }
 } 

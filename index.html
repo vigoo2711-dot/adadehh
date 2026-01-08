@@ -1,1074 +1,724 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Happy Birthday My Love 💕</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Indie+Flower&display=swap');
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Caveat:wght@400;700&family=Indie+Flower&display=swap" rel="stylesheet"/>
 
+  <style>
+    /* --- RESET & GLOBAL --- */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
       font-family: 'Indie Flower', cursive;
-      scroll-behavior: smooth;
-      background: repeating-linear-gradient(
-        45deg,
-        #4a3c28 0px,
-        #4a3c28 10px,
-        #5d4a35 10px,
-        #5d4a35 20px,
-        #6b5b3a 20px,
-        #6b5b3a 30px,
-        #4a3c28 30px,
-        #4a3c28 40px
-      );
+      background: repeating-linear-gradient(45deg, #4a3c28 0px, #4a3c28 10px, #5d4a35 10px, #5d4a35 20px, #6b5b3a 20px, #6b5b3a 30px, #4a3c28 30px, #4a3c28 40px);
       min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .coquette-bg { background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 25%, #f48fb1 50%, #ec407a 75%, #e91e63 100%); }
+
+    /* --- BUKU 3D STYLE (FINAL FIX: ANTI-TURUN & ANTI-GLITCH) --- */
+    .book-wrapper {
+      perspective: 2500px; /* Perspektif diperbaiki agar tidak distorsi */
+      display: flex; justify-content: center; align-items: center;
+      padding: 60px 0;
+      z-index: 50;
+      perspective-origin: 50% 50%; /* Memastikan titik pandang di tengah */
     }
 
-    .coquette-bg {
-      background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 25%, #f48fb1 50%, #ec407a 75%, #e91e63 100%);
+    .book {
+      position: relative;
+      width: 300px; height: 460px;
+      transform-style: preserve-3d;
+      box-shadow: 20px 20px 50px rgba(0,0,0,0.5);
+      transition: transform 0.5s;
     }
 
-    .typewriter {
+    .sheet {
+      position: absolute; 
+      top: 0; left: 0; /* Memaksa posisi di pojok kiri atas */
+      margin: 0; padding: 0; /* Reset margin/padding agar tidak turun */
+      width: 100%; height: 100%;
+      
+      /* FIX UTAMA: Kunci engsel di kiri tengah dengan !important */
+      transform-origin: left center !important; 
+      
+      transform-style: preserve-3d;
+      transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+      cursor: pointer;
+      background-color: #fffbf0;
+      border-radius: 4px 12px 12px 4px;
+    }
+
+    .front, .back {
+      position: absolute; 
+      top: 0; left: 0;
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      border-radius: 4px 12px 12px 4px;
+      backface-visibility: hidden; /* Sisi sebaliknya hilang */
       overflow: hidden;
-      border-right: 2px solid #ec407a;
+      box-shadow: inset 3px 0 20px rgba(0,0,0,0.1);
+    }
+
+    .front { background: #fffbf0; z-index: 2; }
+    .back { 
+      background: #fffbf0; 
+      transform: rotateY(180deg); 
+      z-index: 1; 
+      display: flex; justify-content: center; align-items: center; 
+    }
+
+    /* --- PERBAIKAN CSS FLASHLIGHT (SENTER) --- */
+   /* --- CSS UNTUK SECTION RAHASIA (FINAL UPDATE) --- */
+    #secret {
+      position: relative;
+      background-color: #000;
+      overflow: hidden;
+      /* cursor: none; <-- Hapus ini jika ingin kursor terlihat */
+    }
+
+    /* LAYER 1 (Paling Bawah): Foto Full Layar */
+    .secret-full-photo {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; /* Agar foto mengisi penuh tanpa gepeng */
+      z-index: 5; /* Layer paling bawah */
+      filter: brightness(0.7); /* Sedikit digelapkan agar teks lebih terbaca */
+    }
+
+    /* LAYER 2 (Tengah): Wadah Teks Tersebar */
+    .scattered-content {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 10; /* Di atas foto, di bawah senter */
+      pointer-events: none; /* PENTING: Agar mouse tembus ke layer senter */
+    }
+
+    /* Item Teksnya */
+    .scattered-item {
+      position: absolute;
+      font-weight: bold;
+      color: #ff4081; /* Pink terang */
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 64, 129, 0.6); /* Shadow kuat biar terbaca di atas foto */
       white-space: nowrap;
-      animation: typing 4s steps(50, end), blink-caret 0.75s step-end infinite;
     }
 
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; }
+    /* LAYER 3 (Atas): Lapisan Senter Hitam */
+    .flashlight-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 20; /* Menutupi foto dan teks */
+      pointer-events: none; 
+      
+      --cursor-x: 50%;
+      --cursor-y: 50%;
+
+      /* Ukuran cahaya senter (px besar) */
+      background: radial-gradient(
+        circle at var(--cursor-x) var(--cursor-y), 
+        transparent 150px,  
+        rgba(0, 0, 0, 0.6) 200px, 
+        rgba(0, 0, 0, 1) 300px
+      );
     }
 
-    @keyframes blink-caret {
-      from, to { border-color: transparent; }
-      50% { border-color: #ec407a; }
-    }
-
-    .floating-hearts {
+    /* --- CSS BARU UNTUK FOTO FULL LAYAR --- */
+    .secret-full-photo {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
-      overflow: hidden;
+      /* 'object-fit: cover' PENTING agar foto mengisi penuh tanpa gepeng */
+      object-fit: cover; 
+      z-index: 10; /* Posisi di belakang lapisan senter (z-index 20) */
+      /* Opsional: Sedikit gelap biar efek senter makin kontras */
+      filter: brightness(0.8); 
     }
 
-    .heart {
-      position: absolute;
-      color: rgba(236, 64, 122, 0.6);
-      font-size: 1.5rem;
-      animation: float-hearts 8s infinite linear;
+    /* --- CSS BARU: GALERI MOMEN (MASONRY STYLE) --- */
+    .memory-gallery {
+      column-count: 3; /* Membuat 3 kolom seperti pinterest/referensi */
+      column-gap: 15px;
+      padding: 0 10px;
     }
-
-    @keyframes float-hearts {
-      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
-    }
-
-    .falling-photo {
-      position: fixed;
-      top: -100px;
-      z-index: -1;
-      pointer-events: none;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-100px) rotate(0deg);
-        opacity: 0;
-      }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-
-    .scrapbook-container {
-      width: 90%;
-      max-width: 1200px;
-      height: 700px;
-      margin: 0 auto;
-      background: #fffbf0;
-      background-image: 
-        radial-gradient(circle at 20% 80%, rgba(0,0,0,0.05) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(0,0,0,0.03) 0%, transparent 50%);
-      border-radius: 8px;
-      box-shadow: 
-        0 0 0 20px rgba(139, 69, 19, 0.3),
-        0 0 0 40px rgba(139, 69, 19, 0.2),
-        0 0 0 60px rgba(139, 69, 19, 0.1),
-        0 20px 60px rgba(0,0,0,0.3);
+    
+    .memory-item {
+      break-inside: avoid; /* Mencegah foto terpotong antar kolom */
+      margin-bottom: 15px;
       position: relative;
-      display: flex;
+      border-radius: 15px;
       overflow: hidden;
-      perspective: 1000px;
-    }
-
-    .scrapbook-spine {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 20px;
-      background: linear-gradient(to bottom, #8b4513, #654321, #8b4513);
-      transform: translateX(-50%);
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-      z-index: 10;
-    }
-
-    .page-left, .page-right {
-      flex: 1;
-      padding: 40px;
-      position: relative;
-      backface-visibility: hidden;
-    }
-
-    .page-left {
-      border-right: 1px solid rgba(139, 69, 19, 0.3);
-      transform-origin: right center;
-      transform: rotateY(-90deg);
-      opacity: 0;
-    }
-
-    .page-right {
-      border-left: 1px solid rgba(139, 69, 19, 0.3);
-      transform-origin: left center;
-      transform: rotateY(90deg);
-      opacity: 0;
-    }
-
-    .scrapbook-container.open .page-left {
-      animation: page-open-left 1.5s ease-out forwards;
-    }
-
-    .scrapbook-container.open .page-right {
-      animation: page-open-right 1.5s ease-out forwards;
-    }
-
-    .polaroid-photo {
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease;
       background: white;
-      padding: 15px;
-      border-radius: 3px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      margin-bottom: 20px;
-      display: inline-block;
-      transform-origin: center;
+      padding: 5px; /* Sedikit frame putih */
     }
 
-    .polaroid-photo img {
+    .memory-item img {
       width: 100%;
       height: auto;
-      border-radius: 2px;
+      border-radius: 10px;
+      display: block;
     }
 
-    .polaroid-photo:nth-child(odd) {
-      transform: rotate(-2deg);
-    }
+    /* Efek miring-miring acak agar estetik seperti tempelan stiker */
+    .memory-item:nth-child(odd) { transform: rotate(2deg); }
+    .memory-item:nth-child(even) { transform: rotate(-2deg); }
+    .memory-item:nth-child(3n) { transform: rotate(1deg); }
+    .memory-item:nth-child(4n) { transform: rotate(-1deg); }
 
-    .polaroid-photo:nth-child(even) {
-      transform: rotate(1deg);
-    }
-
-    .handwriting {
-      font-family: 'Caveat', cursive;
-      font-size: 18px;
-      color: #5d4a35;
-      line-height: 1.4;
-    }
-
-    .title-handwriting {
-      font-family: 'Caveat', cursive;
-      font-size: 32px;
-      color: #8b4513;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    @keyframes page-open-left {
-      0% {
-        transform: rotateY(-90deg);
-        opacity: 0;
-      }
-      50% {
-        opacity: 0.5;
-      }
-      100% {
-        transform: rotateY(0deg);
-        opacity: 1;
-      }
-    }
-
-    @keyframes page-open-right {
-      0% {
-        transform: rotateY(90deg);
-        opacity: 0;
-      }
-      50% {
-        opacity: 0.5;
-      }
-      100% {
-        transform: rotateY(0deg);
-        opacity: 1;
-      }
-    }
-
-    .secret-overlay {
-      position: relative;
-      cursor: none;
-    }
-
-    .secret-overlay::before {
-      content: '';
-      position: fixed;
-      top: var(--mouse-y, -150px);
-      left: var(--mouse-x, -150px);
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, transparent 0%, transparent 60%, rgba(0,0,0,0.95) 100%);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 1000;
-      transition: none;
-      opacity: 0;
-    }
-
-    .secret-overlay.active::before {
-      opacity: 1;
-    }
-
-    .polaroid {
-      background: white;
-      padding: 12px;
-      border-radius: 4px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-      transform-origin: center;
-      transition: transform 0.3s ease;
-    }
-
-    .polaroid:hover {
+    .memory-item:hover {
       transform: scale(1.05) rotate(0deg) !important;
+      z-index: 10;
+      box-shadow: 0 10px 25px rgba(236, 64, 122, 0.4);
     }
 
-    .polaroid img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 2px;
-    }
-
-    .polaroid h3 {
-      font-family: 'Dancing Script', cursive;
-      font-size: 18px;
-      color: #e91e63;
-      text-align: center;
-      margin-top: 8px;
-      margin-bottom: 0;
-    }
-
-    .puzzle-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      max-width: 300px;
-      margin: 0 auto;
-    }
-
-    .puzzle-piece {
-      width: 100%;
-      height: 90px;
-      background-size: 270px 270px;
-      background-position: center;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      font-weight: bold;
-      color: rgba(236, 64, 122, 0.9);
-      position: relative;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .puzzle-piece:hover {
-      transform: scale(1.05);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-
-    .puzzle-piece.empty {
-      background: #f8f9fa;
-      border: 2px dashed #ec407a;
-      box-shadow: inset 0 0 10px rgba(236, 64, 122, 0.2);
-    }
-
-    .photobooth-frame {
-      position: relative;
-      border: 8px solid #ec407a;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .photobooth-frame::before {
-      content: '💕 Happy Birthday 💕';
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(236, 64, 122, 0.9);
-      color: white;
-      padding: 8px 20px;
-      border-radius: 25px;
-      font-size: 16px;
-      font-weight: bold;
-      z-index: 5;
-      font-family: 'Dancing Script', cursive;
-    }
-
-    .scroll-indicator {
+    /* --- CSS BARU: HUJAN LOVE --- */
+    .falling-love {
       position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(236, 64, 122, 0.9);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-weight: bold;
-      animation: bounce 2s infinite;
-      z-index: 1000;
+      top: -50px;
+      z-index: -1;
+      pointer-events: none;
+      animation: fall linear infinite;
+      font-size: 20px; /* Ukuran dasar */
     }
-
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-      40% { transform: translateX(-50%) translateY(-10px); }
-      60% { transform: translateX(-50%) translateY(-5px); }
-    }
-
-    .fade-in {
-      animation: fadeIn 1s ease-in;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .memory-card {
-      background: white;
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
-    }
-
-    .memory-card:hover {
-      transform: translateY(-5px);
-    }
-
-    /* Responsive Design */
+    
+    /* Responsif untuk HP */
     @media (max-width: 768px) {
-      .scrapbook-container {
-        height: auto;
-        min-height: 400px;
-        width: 95%;
-      }
-
-      .polaroid {
-        width: 120px !important;
-        height: 160px !important;
-        margin: 10px;
-      }
-
-      .puzzle-container {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
-        max-width: 250px;
-      }
-
-      .puzzle-piece {
-        width: 100%;
-        height: 70px;
-        font-size: 16px;
-      }
-
-      .photobooth-frame {
-        max-width: 80vw;
-      }
-
-      .title-handwriting {
-        font-size: 24px;
-      }
-
-      .handwriting {
-        font-size: 14px;
-      }
-
-      .floating-photo {
-        width: 30px;
-        height: 30px;
-      }
-
-      .heart {
-        font-size: 1rem;
-      }
-
-      .scroll-indicator {
-        font-size: 14px;
-        padding: 10px 20px;
-      }
-
-      .memory-card {
-        padding: 15px;
-      }
+      .memory-gallery { column-count: 2; }
     }
 
-    @media (max-width: 480px) {
-      .scrapbook-container {
-        min-height: 300px;
-      }
+    /* Dekorasi Cover & Isi */
+    .cover-skin { background-color: #5d4037; border: 4px solid #3e2723; display: flex; justify-content: center; align-items: center; position: relative; }
+    .ribbon { position: absolute; top: 0; bottom: 0; right: 30px; width: 30px; background: #d32f2f; border-left: 1px solid rgba(255,255,255,0.2); box-shadow: 2px 0 5px rgba(0,0,0,0.3); }
+    .cover-content { text-align: center; z-index: 10; margin-right: 15px; }
+    .cover-title { font-family: 'Cinzel', serif; color: #ffd700; font-size: 3rem; line-height: 1; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.6); border: 3px double #ffd700; padding: 10px 20px; }
+    .cover-subtitle { color: #e0e0e0; font-family: 'Caveat', cursive; font-size: 1.5rem; }
 
-      .polaroid {
-        width: 100px !important;
-        height: 140px !important;
-      }
+    .page-content { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; background-image: linear-gradient(#e0e0e0 1px, transparent 1px); background-size: 100% 25px; }
+    .photo-border { padding: 8px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transform: rotate(-2deg); width: 85%; margin-bottom: 10px; }
+    .photo-border img { width: 100%; height: auto; object-fit: cover; display: block; }
+    .rotate-1 { transform: rotate(3deg); } .rotate-2 { transform: rotate(-3deg); }
 
-      .puzzle-container {
-        max-width: 200px;
-      }
+    /* Kelas Animasi Putar */
+    .flipped { transform: rotateY(-180deg); }
 
-      .puzzle-piece {
-        height: 60px;
-        font-size: 14px;
-      }
+    /* --- FITUR LAIN (Hati, Puzzle, dll) - TETAP ADA --- */
+    .floating-hearts { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
+    .heart { position: absolute; color: rgba(236, 64, 122, 0.6); font-size: 1.5rem; animation: float-hearts 8s infinite linear; }
+    @keyframes float-hearts { 0% { transform: translateY(100vh) rotate(0deg); opacity: 0; } 100% { transform: translateY(-100px) rotate(360deg); opacity: 0; } }
+    .falling-photo { position: fixed; top: -100px; z-index: -1; pointer-events: none; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); animation: fall linear infinite; }
+    @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
+    .typewriter { overflow: hidden; border-right: 2px solid #ec407a; white-space: nowrap; animation: typing 4s steps(50, end), blink-caret 0.75s step-end infinite; }
+    @keyframes typing { from { width: 0; } to { width: 100%; } } @keyframes blink-caret { 50% { border-color: transparent; } }
+    
+    .puzzle-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 300px; margin: 0 auto; }
+    .puzzle-piece { width: 100%; height: 90px; background-size: 270px 270px; background-position: center; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; color: rgba(236, 64, 122, 0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .puzzle-piece.empty { background: #f8f9fa; border: 2px dashed #ec407a; }
+    
 
-      .title-handwriting {
-        font-size: 20px;
-      }
+    
+    .fade-in { animation: fadeIn 1s ease-in; } @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 768px) { .book { width: 260px; height: 400px; } }
 
-      .handwriting {
-        font-size: 12px;
-      }
+    /* --- RESPONSIVE DESIGN FOR ALL DEVICES --- */
+    /* Mobile Phones (up to 768px) */
+    @media (max-width: 768px) {
+      .book-wrapper { padding: 30px 0; }
+      .cover-title { font-size: 2rem; padding: 8px 15px; }
+      .cover-subtitle { font-size: 1.2rem; }
+      .page-content { padding: 15px; }
+      .photo-border { width: 90%; }
+      .puzzle-container { max-width: 250px; }
+      .puzzle-piece { height: 75px; background-size: 225px 225px; }
+      .memory-gallery { column-count: 2; column-gap: 10px; }
+      .memory-item { margin-bottom: 10px; }
+      .falling-love { font-size: 16px; }
+      /* Adjust section paddings */
+      section { padding: 40px 0; }
+      .min-h-screen { min-height: 100vh; }
+      /* Text sizes */
+      h2 { font-size: 2rem !important; }
+      .text-5xl { font-size: 2rem !important; }
+      .text-6xl { font-size: 3rem !important; }
+      .text-2xl { font-size: 1.5rem !important; }
+      .text-lg { font-size: 1rem !important; }
+      .p-8 { padding: 1rem !important; }
+      .p-12 { padding: 1.5rem !important; }
+      .mb-16 { margin-bottom: 2rem !important; }
+      .mb-8 { margin-bottom: 1rem !important; }
+      .mb-6 { margin-bottom: 1rem !important; }
+      .mb-4 { margin-bottom: 0.5rem !important; }
+      .space-y-6 > * + * { margin-top: 1rem !important; }
+    }
+
+    /* Tablets (769px to 1024px) */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .book { width: 280px; height: 430px; }
+      .cover-title { font-size: 2.5rem; }
+      .memory-gallery { column-count: 3; column-gap: 15px; }
+      .puzzle-container { max-width: 280px; }
+      .puzzle-piece { height: 85px; background-size: 252px 252px; }
+      .falling-love { font-size: 18px; }
+      /* Adjust text sizes slightly */
+      .text-5xl { font-size: 3rem !important; }
+      .text-7xl { font-size: 4rem !important; }
+    }
+
+    /* Large Tablets and Small Desktops (1025px to 1200px) */
+    @media (min-width: 1025px) and (max-width: 1200px) {
+      .memory-gallery { column-count: 4; column-gap: 20px; }
+    }
+
+    /* Large Desktops (above 1200px) */
+    @media (min-width: 1201px) {
+      .memory-gallery { column-count: 5; column-gap: 25px; }
+      .book { width: 320px; height: 480px; }
+      .falling-love { font-size: 24px; }
+    }
+
+    /* Ensure body and html are responsive */
+    html, body { width: 100%; height: auto; overflow-x: hidden; }
+    body { min-height: 100vh; }
+
+    /* Adjust canvas for mobile */
+    @media (max-width: 768px) {
+      canvas { width: 100vw; height: 100vh; }
+      #container { width: 100vw; height: 100vh; }
     }
   </style>
 </head>
+
 <body class="coquette-bg text-pink-800">
 
-  <!-- Landing Section -->
   <section id="landing" class="min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
-    <!-- Falling Photos Background -->
     <div id="fallingPhotos" class="fixed inset-0 pointer-events-none z-[-1]"></div>
-
     <div class="text-center z-10 px-4">
-      <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg opacity-0 fade-in" id="greeting">
-        Hai Sayang!
-      </h1>
-      <button id="openBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-110 shadow-lg">
-        💕 Buka Sekarang 💕
-      </button>
+      <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg opacity-0 fade-in" id="greeting">Hai Sayang!</h1>
+      <button id="openBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-110 shadow-lg">💕 Buka Sekarang 💕</button>
     </div>
   </section>
 
-  <!-- Scroll Indicator -->
-  <div id="scrollIndicator" class="scroll-indicator hidden">
-    Scroll sampai habis ya sayang 💕
-  </div>
+  <div id="scrollIndicator" class="scroll-indicator hidden">Scroll sampai habis ya sayang 💕</div>
 
-  <!-- Birthday Message Section -->
   <section id="birthday" class="min-h-screen flex items-center justify-center py-20 relative">
     <div class="floating-hearts" id="floatingHearts"></div>
     <div class="max-w-4xl mx-auto text-center px-4">
-      <h2 class="text-5xl md:text-7xl font-bold text-white mb-12 drop-shadow-lg">
-        Happy Birthday Sayang
-      </h2>
+      <h2 class="text-5xl md:text-7xl font-bold text-white mb-12 drop-shadow-lg">Happy Birthday Sayang</h2>
       <div class="bg-white/20 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl">
         <div class="text-2xl md:text-3xl text-white leading-relaxed">
-          <span class="typewriter" id="typewriterText">
-            Untuk Pacar aku yang paling cantik dan manis di dunia...
-          </span>
+          <span class="typewriter" id="typewriterText">Untuk Pacar aku yang paling cantik dan manis di dunia...</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Love Letter Section -->
   <section id="loveletter" class="min-h-screen py-20 bg-transparent">
     <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-5xl md:text-7xl font-bold text-center text-pink-600 mb-16">
-        Surat Cinta Untukmu
-      </h2>
-
+      <h2 class="text-5xl md:text-7xl font-bold text-center text-pink-600 mb-16">Happy Sweet Seventeen sayangg🥳🥳</h2>
       <div class="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border-4 border-pink-200">
-        <div class="text-center mb-8">
-          <div class="text-6xl mb-4">💌</div>
-          <h3 class="text-2xl font-bold text-pink-600 mb-6">My Dearest Love,</h3>
-        </div>
-
+        <div class="text-center mb-8"><div class="text-6xl mb-4">💌</div><h3 class="text-2xl font-bold text-pink-600 mb-6">Untuk kamu,</h3></div>
         <div class="space-y-6 text-lg leading-relaxed text-gray-700">
-          <p>
-            Hari ini adalah hari yang sangat spesial bagimu, dan aku ingin mengungkapkan
-            betapa berartinya dirimu dalam hidupku. Setiap hari bersamamu adalah petualangan
-            yang indah, penuh dengan tawa, cinta, dan kenangan yang tak terlupakan.
-          </p>
+          <p>Selamat ulang tahun ya sayangg, ciee udah 17 th nihh yaa. Semoga semesta selalu memberimu kemudahan atas segala usahamu, semoga do'amu selalu terkabul satu persatu, semoga langkah kakimu selalu diringankan untuk selalu melangkah maju, semoga pundakmu dikuatkan, semoga segala urusanmu dipermudahkan, semoga hatimu dilapangkan atas segala takdir yang diluar rencanamu, dan semoga kakmu selalu dikelilingi orang baik dimanapun kamu berada, My best whishes for u.</p>
+          <p>Terimakasihh sudah bertahan selama ini sayangg itu gabentarr lohh, kamu terlahir di dunia dari kecil banget sekarang udah dewasa, banyakk hal yang udah kamu laluin tapi masih banyak bngt hal yng belum kmu laluin, semakin kamu dewasa semakin banyak juga rintangannyaa, but it's okay aku ada disini buat nemenin kamu, menjadi sandaran kamu dan menjadi rumah untuk kamu pulang disaat dunia sedang tidak berpihak kepada mu. Sekali lagi terimakasih udah jadi manusia kuat selama ini, tetap jadi asaa yang aku kenall yaa!!!!</p>
+          <p>Kamu adalah bagian dari Cerita yang setiap halamannya ingin aku baca, dari awal hingga akhir hayatku..</p>
+          <div class="text-center mt-8"><p class="text-2xl font-bold text-pink-600">Forever Yours,</p><p class="text-xl text-pink-500 mt-2">Dari Aku ❤️</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <p>
-            Kamu adalah cahaya yang menerangi hari-hariku, bintang yang membimbingku di malam hari,
-            dan cinta sejati yang selalu aku cari. Terima kasih telah menjadi bagian dari hidupku,
-            dan aku berjanji akan selalu mencintaimu dengan sepenuh hati.
-          </p>
+ <section id="memories" class="min-h-screen py-20 bg-white/50 backdrop-blur-sm">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl md:text-5xl font-bold text-pink-600 mb-2" style="font-family: 'Indie Flower'">Momen Indah Kita 📷</h2>
+        <p class="text-gray-500">Setiap detik bersamamu adalah kenangan manis</p>
+      </div>
 
-          <p>
-            Di hari ulang tahunmu ini, aku berharap semua impianmu tercapai, semua harapanmu terwujud,
-            dan semua cintamu dibalas dengan sepenuhnya. Kamu layak mendapatkan yang terbaik di dunia ini.
-          </p>
+      <div class="memory-gallery">
+        <div class="memory-item">
+          <img src="images/img11.jpg" alt="Momen 1" />
+        </div>
+        <div class="memory-item">
+          <img src="images/img16.jpg" alt="Momen 2" />
+        </div>
+        <div class="memory-item">
+          <img src="images/img19.jpg" alt="Momen 3" />
+        </div>
+        <div class="memory-item">
+          <img src="images/img14.jpg" alt="Momen 4" />
+        </div>
+        <div class="memory-item">
+          <img src="images/img15.jpg" alt="Momen 5" />
+        </div>
+        <div class="memory-item">
+          <img src="images/img4.jpg" alt="Momen 6" />
+        </div>
+        <div class="memory-item">
+          <img src="images/img8.jpg" alt="Momen 7" />
+        </div>
+        <div class="memory-item">
+          <img src="images/img12.jpg" alt="Momen 8" />
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <div class="text-center mt-8">
-            <p class="text-2xl font-bold text-pink-600">Forever Yours,</p>
-            <p class="text-xl text-pink-500 mt-2">[Nama Kamu]</p>
+  <section id="album" class="min-h-screen py-20 bg-transparent flex flex-col items-center justify-center">
+    <div class="text-center mb-10">
+      <h2 class="text-5xl md:text-7xl font-bold text-pink-600 mb-4" style="font-family: 'Caveat'">Notebook</h2>
+      <p class="text-xl text-gray-600">Klik buku untuk membuka setiap lembar...</p>
+    </div>
+
+    <div class="book-wrapper">
+      <div class="book" id="book3d">
+        
+        <div class="sheet" style="z-index: 6">
+          <div class="front cover-skin">
+            <div class="ribbon"></div>
+            <div class="cover-content"><h1 class="cover-title">Happy<br />Birthday</h1><p class="cover-subtitle">To My Favorite Person</p></div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Memories Section -->
-  <section id="memories" class="min-h-screen py-20 bg-transparent">
-    <div class="max-w-7xl mx-auto px-4">
-      <h2 class="text-5xl md:text-7xl font-bold text-center text-pink-600 mb-16">
-        Kenangan Kita Bersama
-      </h2>
-
-      <div class="flex flex-wrap justify-center gap-6">
-        <div class="polaroid w-48 h-64 mx-auto" style="transform: rotate(-3deg);">
-          <img src="images/img1.jpg" alt="Memory 1">
-          <h3>Pertemuan Pertama</h3>
-        </div>
-
-        <div class="polaroid w-40 h-56 mx-auto" style="transform: rotate(2deg);">
-          <img src="images/img2.jpg" alt="Memory 2">
-          <h3>Date Night</h3>
-        </div>
-
-        <div class="polaroid w-52 h-68 mx-auto" style="transform: rotate(-1deg);">
-          <img src="images/img3.jpg" alt="Memory 3">
-          <h3>Petualangan Seru</h3>
-        </div>
-
-        <div class="polaroid w-44 h-60 mx-auto" style="transform: rotate(4deg);">
-          <img src="images/img4.jpg" alt="Memory 4">
-          <h3>Momen Spesial</h3>
-        </div>
-
-        <div class="polaroid w-48 h-64 mx-auto" style="transform: rotate(-2deg);">
-          <img src="images/img5.jpg" alt="Memory 5">
-          <h3>Kehidupan Sehari-hari</h3>
-        </div>
-
-        <div class="polaroid w-40 h-56 mx-auto" style="transform: rotate(1deg);">
-          <img src="images/img6.jpg" alt="Memory 6">
-          <h3>Masa Depan Kita</h3>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Album Book Section -->
-  <section id="album" class="min-h-screen py-20 bg-transparent">
-    <div class="max-w-6xl mx-auto px-4 text-center">
-      <h2 class="title-handwriting mb-16">
-        Album Kita
-      </h2>
-
-      <div class="scrapbook-container" id="scrapbook">
-        <div class="scrapbook-spine"></div>
-        
-        <div class="page-left">
-        </div>
-        
-        <div class="page-right">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Secret Message Section -->
-  <section id="secret" class="min-h-screen py-20 bg-black relative secret-overlay">
-    <div class="max-w-6xl mx-auto px-4 text-center">
-      <h2 class="text-5xl md:text-7xl font-bold text-white mb-16">
-        Cari Pesan Rahasia
-      </h2>
-      <p class="text-xl text-gray-300 mb-8">Gerakkan mouse-mu untuk menemukan pesan tersembunyi...</p>
-
-      <div class="relative py-20">
-        <div class="absolute inset-0 flex items-center justify-center">
-          <div class="text-center max-w-2xl">
-            <div class="text-6xl mb-8">💕</div>
-            <h3 class="text-4xl font-bold text-pink-400 mb-4">I Love You Forever</h3>
-            <p class="text-xl text-pink-300">
-              Kamu adalah segalanya bagiku. Setiap hari bersamamu adalah berkah terbesar.
-              Aku mencintaimu lebih dari kata-kata bisa ungkapkan. Happy Birthday, my love! 🎉
-            </p>
-            <div class="mt-8 grid grid-cols-2 gap-4 max-w-md mx-auto">
-              <img src="images/img7.jpg" alt="Secret 1" class="rounded-lg shadow-lg">
-              <img src="images/img6.jpg" alt="Secret 2" class="rounded-lg shadow-lg">
+          <div class="back">
+            <div class="page-content">
+              <div class="photo-border"><img src="images/img5.jpg" alt="Foto 1" /></div>
+              <p class="handwriting mt-4 font-bold text-xl text-pink-800"></p>
             </div>
           </div>
         </div>
+
+        <div class="sheet" style="z-index: 5">
+          <div class="front">
+            <div class="page-content text-center px-6">
+              <h3 class="text-3xl text-pink-600 font-bold mb-4" style="font-family: 'Caveat'">Selamat Ulang Tahun!</h3>
+              <p class="handwriting text-xl text-gray-700">Di hari spesialmu ini, aku cuma mau bilang terima kasih udah lahir ke dunia dan jadi alasan bahagiaku.</p>
+            </div>
+          </div>
+          <div class="back">
+            <div class="page-content">
+              <div class="photo-border rotate-2"><img src="images/img2.jpg" alt="Foto 2" /></div>
+              <p class="handwriting mt-4 font-bold text-xl text-pink-800"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sheet" style="z-index: 4">
+          <div class="front">
+            <div class="page-content text-center px-6">
+              <h3 class="text-3xl text-pink-600 font-bold mb-4" style="font-family: 'Caveat'">Untuk Kamu</h3>
+              <p class="handwriting text-xl text-gray-700">Selamat menjadi dewasa yaa, yang dimana kamu akan bertemu lebih banyak rintangan yang harus dihadapi, jangan lupa ucapkan "Terima Kasih" pada dirimu yang kuat sampai detik ini.</p>
+            </div>
+          </div>
+          <div class="back">
+            <div class="page-content">
+              <div class="photo-border -rotate-2"><img src="images/img6.jpg" alt="Foto 3" /></div>
+              <p class="handwriting mt-4 font-bold text-xl text-pink-800"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sheet" style="z-index: 3">
+          <div class="front">
+            <div class="page-content text-center px-6">
+              <h3 class="text-3xl text-pink-600 font-bold mb-4" style="font-family: 'Caveat'">Harapanku</h3>
+              <p class="handwriting text-xl text-gray-700">Semoga hal baik selalu beriringan denganmu. Teruslah tumbuh, melangkah maju, dan meraih impianmu. Aku akan menjadi saksi dari setiap perjuangan dan pencapaianmu.</p>
+            </div>
+          </div>
+          <div class="back">
+            <div class="page-content">
+              <div class="photo-border rotate-1"><img src="images/img7.jpg" alt="Foto 4" /></div>
+              <p class="handwriting mt-4 font-bold text-xl text-pink-800"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sheet" style="z-index: 2">
+          <div class="front">
+            <div class="page-content text-center px-6">
+              <h3 class="text-3xl text-pink-600 font-bold mb-4" style="font-family: 'Caveat'">Maaf</h3>
+              <p class="handwriting text-xl text-gray-700">Meski tak selalu hadir didekatmu, aku akan selalu mendukungmu dengan do'a dan harapan terbaik. Ketika kamu merasa lelah atau ragu, ingatlah bahwa ada seseorang yang selalu percaya dengan setiap langkahmu, baik itu besar maupun kecil.</p>
+            </div>
+          </div>
+          <div class="back">
+            <div class="page-content">
+              <div class="photo-border -rotate-1"><img src="images/img19.jpg" alt="Foto 5" /></div>
+              <p class="handwriting mt-4 font-bold text-xl text-pink-800"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sheet" style="z-index: 1">
+          <div class="front">
+            <div class="page-content text-center px-6">
+              <h3 class="text-3xl text-pink-600 font-bold mb-4" style="font-family: 'Caveat'">I Love You</h3>
+              <p class="handwriting text-xl text-gray-700 mb-6">AKu akan selalu menjadi seseorang yang paling bangga dengan setiap prosesmu, dengan setiap keberhasilanmu. Karena bagiku, melihatmu barusaha dan tumbuh adalah kebahagiaanku tersendiri. Teruslah melangkah, aku akan selalu mendukungmu!!!</p>
+              <p class="text-sm text-gray-400 mt-4">(Scroll ke bawah untuk kejutan lain)</p>
+            </div>
+          </div>
+          <div class="back cover-skin">
+            <div class="cover-content"><h3 class="text-yellow-400 font-bold text-2xl" style="font-family: 'Caveat'">Made with ❤️</h3></div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Puzzle Game Section -->
+<section id="secret" class="min-h-screen py-20 bg-black relative">
+    
+    <div class="absolute top-10 w-full text-center z-30 pointer-events-none">
+      <h2 class="text-4xl md:text-5xl font-bold text-pink-500 mb-2" style="text-shadow: 0 0 15px rgba(233, 30, 99, 0.8);">
+        ✨ Pesan Rahasia ✨
+      </h2>
+      <p class="text-gray-300 text-lg" style="text-shadow: 1px 1px 2px black;">(Gerakkan kursor untuk menemukan pesan & foto)</p>
+    </div>
+
+    <img src="images/img4.jpg" alt="Background Rahasia" class="secret-full-photo">
+
+    <div class="scattered-content">
+      <span class="scattered-item text-4xl" style="top: 20%; left: 15%;">Sayangku ❤️</span>
+      <span class="scattered-item text-3xl" style="top: 50%; left: 40%;">Cantik Banget</span>
+      <span class="scattered-item text-5xl" style="top: 80%; left: 10%;">Hebat!</span>
+      <span class="scattered-item text-3xl" style="top: 35%; left: 65%;">I Love You 3000</span>
+      <span class="scattered-item text-4xl" style="top: 70%; left: 75%;">Semangat trus yaa!!</span>
+      <span class="scattered-item text-2xl" style="top: 15%; left: 70%;">My Everything</span>
+      <span class="scattered-item text-3xl" style="top: 90%; left: 50%;">Forever Us</span>
+    </div>
+
+    <div class="flashlight-overlay" id="flashlightOverlay"></div>
+
+  </section>
   <section id="puzzle" class="min-h-screen py-20 bg-transparent">
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="text-5xl md:text-7xl font-bold text-pink-600 mb-16">
-        Puzzle Cinta Kita
-      </h2>
-
+      <h2 class="text-5xl md:text-7xl font-bold text-pink-600 mb-16">Puzzle Cinta Kita</h2>
       <div class="bg-white rounded-3xl p-8 shadow-2xl">
-        <div class="puzzle-container" id="puzzleContainer">
-          <!-- Puzzle pieces will be generated here -->
-        </div>
-
+        <div class="puzzle-container" id="puzzleContainer"></div>
         <div class="mt-8">
           <p class="text-lg text-pink-600 mb-4" id="puzzleStatus">Susun potongan foto kita!</p>
           <div class="flex justify-center gap-4">
-            <button id="shuffleBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-full transition-colors">
-              🔀 Acak Ulang
-            </button>
-            <button id="hintBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full transition-colors">
-              💡 Petunjuk
-            </button>
+            <button id="shuffleBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-full transition-colors">🔀 Acak</button>
+            <button id="hintBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full transition-colors">💡 Petunjuk</button>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Photobooth Section -->
   <section id="photobooth" class="min-h-screen py-20 bg-transparent">
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="text-5xl md:text-7xl font-bold text-pink-600 mb-16">
-        Photobooth Ceria
-      </h2>
-
+      <h2 class="text-5xl md:text-7xl font-bold text-pink-600 mb-16">Photobooth Ceria</h2>
       <div class="bg-white rounded-3xl p-8 shadow-2xl">
-        <div class="photobooth-frame mx-auto max-w-md mb-8">
+        <div class="photobooth-frame mx-auto max-w-md mb-8" style="border: 8px solid #ec407a; border-radius: 20px; overflow: hidden;">
           <video id="video" class="w-full rounded-lg" autoplay muted></video>
         </div>
-
         <div class="flex justify-center gap-4">
-          <button id="captureBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-full transition-colors disabled:opacity-50" disabled>
-            📸 Ambil Foto (3 detik)
-          </button>
-          <button id="downloadBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full transition-colors hidden">
-            💾 Download Foto
-          </button>
+          <button id="captureBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-full transition-colors disabled:opacity-50" disabled>📸 Ambil Foto (3 detik)</button>
+          <button id="downloadBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full transition-colors hidden">💾 Download</button>
         </div>
-
         <div id="countdown" class="text-6xl font-bold text-pink-600 mt-4 hidden">3</div>
       </div>
-
       <canvas id="canvas" class="hidden"></canvas>
     </div>
   </section>
 
-  <!-- Galaxy Section (Final) -->
   <section id="galaxy" class="min-h-screen">
     <div class="text-center py-20">
-      <h2 class="text-5xl md:text-7xl font-bold text-white mb-8">
-        Hadiah Terakhir
-      </h2>
-      <a href="galaxy.html" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-110 shadow-lg inline-block">
-        🌌 Masuk ke Galaksi Cinta 🌌
-      </a>
+      <h2 class="text-5xl md:text-7xl font-bold text-white mb-8">Hadiah Terakhir</h2>
+      <a href="galaxy.html" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-110 shadow-lg inline-block">🌌 Masuk ke Galaksi Cinta 🌌</a>
     </div>
   </section>
 
-  <!-- Audio Element -->
   <audio id="bgMusic" loop preload="auto">
-    <source src="sound.mp3" type="audio/mpeg">
+    <source src="sound.mp3" type="audio/mpeg" />
   </audio>
 
-  <script>
-    // Floating Hearts
+ <script>
+    // --- FITUR UMUM ---
     function createFloatingHearts() {
-      const heartsContainer = document.getElementById('floatingHearts');
-
+      const heartsContainer = document.getElementById("floatingHearts");
       setInterval(() => {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.innerHTML = '💖';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDelay = Math.random() * 8 + 's';
-        heart.style.fontSize = (Math.random() * 1 + 1) + 'rem';
-
+        const heart = document.createElement("div");
+        heart.className = "heart"; heart.innerHTML = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDelay = Math.random() * 8 + "s";
+        heart.style.fontSize = Math.random() * 1 + 1 + "rem";
         heartsContainer.appendChild(heart);
-
-        setTimeout(() => {
-          heart.remove();
-        }, 8000);
+        setTimeout(() => heart.remove(), 8000);
       }, 1000);
     }
 
-    // Greeting Animation
     function animateGreeting() {
-      const greeting = document.getElementById('greeting');
-      setTimeout(() => {
-        greeting.classList.remove('opacity-0');
-      }, 1000);
+      const greeting = document.getElementById("greeting");
+      setTimeout(() => greeting.classList.remove("opacity-0"), 1000);
     }
 
-    // Open Button Functionality
-    document.getElementById('openBtn').addEventListener('click', () => {
-      const music = document.getElementById('bgMusic');
+    document.getElementById("openBtn").addEventListener("click", () => {
+      const music = document.getElementById("bgMusic");
       music.play().catch(console.error);
-
-      document.getElementById('scrollIndicator').classList.remove('hidden');
-      document.getElementById('birthday').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById("scrollIndicator").classList.remove("hidden");
+      document.getElementById("birthday").scrollIntoView({ behavior: "smooth" });
     });
 
+   // --- UBAH DARI FOTO JATUH MENJADI HUJAN LOVE ---
+    function createFallingPhotos() {
+      const container = document.getElementById("fallingPhotos");
+      const emojis = ["❤️", "💕", "🥰", "🌹", "✨", "💌"]; // Variasi emoji
+      
+      setInterval(() => {
+        const love = document.createElement("div");
+        love.className = "falling-love";
+        love.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        
+        // Ukuran random
+        const size = 1.5 + Math.random() * 2; // Ukuran antara 1.5rem - 3.5rem
+        love.style.fontSize = size + "rem";
+        
+        // Posisi horizontal random
+        love.style.left = Math.random() * 100 + "vw";
+        
+        // Durasi jatuh random (makin cepat angkanya makin lambat jatuhnya)
+        const duration = 4 + Math.random() * 6; 
+        love.style.animationDuration = duration + "s";
+        
+        container.appendChild(love);
+        
+        // Hapus elemen setelah animasi selesai agar website tidak berat
+        setTimeout(() => { if (love.parentNode) love.remove(); }, duration * 1000);
+      }, 400); // Muncul setiap 400ms (bisa diubah biar makin deras)
+    }
 
+    // --- LOGIC BUKU 3D ---
+    function initialize3DBook() {
+      const sheets = document.querySelectorAll('.sheet');
+      const totalSheets = sheets.length;
+      sheets.forEach((sheet, i) => {
+        sheet.style.zIndex = totalSheets - i;
+        sheet.style.transform = ''; 
+      });
+      sheets.forEach((sheet, index) => {
+        sheet.addEventListener('click', (e) => {
+          if(e.target.closest('a')) return;
+          const isOpening = !sheet.classList.contains('flipped');
+          if (isOpening) {
+            sheet.classList.add('flipped');
+            setTimeout(() => { sheet.style.zIndex = index + 1; }, 600); 
+          } else {
+            sheet.style.zIndex = totalSheets - index;
+            sheet.classList.remove('flipped');
+          }
+        });
+      });
+    }
 
-    // Flashlight Effect
-    const secretSection = document.getElementById('secret');
-    const overlay = document.querySelector('.secret-overlay');
-
-    secretSection.addEventListener('mouseenter', () => {
-      overlay.classList.add('active');
-    });
-
-    secretSection.addEventListener('mouseleave', () => {
-      overlay.classList.remove('active');
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (overlay.classList.contains('active')) {
-        // Update CSS custom properties for ::before positioning
-        overlay.style.setProperty('--mouse-x', (e.clientX - 150) + 'px');
-        overlay.style.setProperty('--mouse-y', (e.clientY - 150) + 'px');
-      }
-    });
-
-    // Enhanced Puzzle Game
+    // --- PUZZLE GAME ---
     let puzzlePieces = [];
     let emptyIndex = 8;
-    let originalOrder = [];
-
     function initializePuzzle() {
-      const container = document.getElementById('puzzleContainer');
-      container.innerHTML = '';
-
-      // Create 3x3 grid (8 pieces + 1 empty)
+      const container = document.getElementById("puzzleContainer");
+      container.innerHTML = "";
       for (let i = 0; i < 9; i++) {
-        const piece = document.createElement('div');
-        piece.className = 'puzzle-piece';
-
+        const piece = document.createElement("div");
+        piece.className = "puzzle-piece";
         if (i < 8) {
-          piece.style.backgroundImage = 'url(images/img1.jpg)';
+          piece.style.backgroundImage = "url(images/img1.jpg)";
           piece.style.backgroundPosition = `${(i % 3) * -90}px ${Math.floor(i / 3) * -90}px`;
           piece.textContent = i + 1;
-          piece.addEventListener('click', () => movePuzzlePiece(i));
-          originalOrder.push(i);
+          piece.addEventListener("click", () => movePuzzlePiece(i));
         } else {
-          piece.classList.add('empty');
+          piece.classList.add("empty");
         }
-
         puzzlePieces.push(piece);
         container.appendChild(piece);
       }
     }
-
     function movePuzzlePiece(index) {
-      const row = Math.floor(index / 3);
-      const col = index % 3;
-      const emptyRow = Math.floor(emptyIndex / 3);
-      const emptyCol = emptyIndex % 3;
-
-      if ((Math.abs(row - emptyRow) === 1 && col === emptyCol) ||
-          (Math.abs(col - emptyCol) === 1 && row === emptyRow)) {
-        // Swap pieces
+      const row = Math.floor(index / 3), col = index % 3;
+      const emptyRow = Math.floor(emptyIndex / 3), emptyCol = emptyIndex % 3;
+      if ((Math.abs(row - emptyRow) === 1 && col === emptyCol) || (Math.abs(col - emptyCol) === 1 && row === emptyRow)) {
         [puzzlePieces[index], puzzlePieces[emptyIndex]] = [puzzlePieces[emptyIndex], puzzlePieces[index]];
         emptyIndex = index;
-
-        updatePuzzleDisplay();
-        checkPuzzleWin();
+        const container = document.getElementById("puzzleContainer");
+        container.innerHTML = "";
+        puzzlePieces.forEach((p) => container.appendChild(p));
+        const isWin = puzzlePieces.every((p, i) => i === 8 ? p.classList.contains("empty") : p.textContent == i + 1);
+        if (isWin) document.getElementById("puzzleStatus").textContent = "🎉 Berhasil! 🎉";
       }
     }
-
-    function updatePuzzleDisplay() {
-      const container = document.getElementById('puzzleContainer');
-      container.innerHTML = '';
-      puzzlePieces.forEach(piece => container.appendChild(piece));
-    }
-
-    function checkPuzzleWin() {
-      const isWin = puzzlePieces.every((piece, index) => {
-        if (index === 8) return piece.classList.contains('empty');
-        return piece.textContent == index + 1;
-      });
-
-      if (isWin) {
-        document.getElementById('puzzleStatus').textContent = '🎉 Selamat! Puzzle berhasil disusun! 💕';
-        createConfetti();
-      }
-    }
-
     function shufflePuzzle() {
-      // More sophisticated shuffle
-      for (let i = 0; i < 1000; i++) {
-        const randomIndex = Math.floor(Math.random() * 8);
-        movePuzzlePiece(randomIndex);
-      }
-      document.getElementById('puzzleStatus').textContent = 'Susun potongan foto kita!';
-    }
-
-    function createConfetti() {
       for (let i = 0; i < 100; i++) {
-        const confetti = document.createElement('div');
-        confetti.style.position = 'fixed';
-        confetti.style.width = '10px';
-        confetti.style.height = '10px';
-        confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-        confetti.style.left = Math.random() * 100 + 'vw';
-        confetti.style.top = '-10px';
-        confetti.style.zIndex = '9999';
-        confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite`;
-
-        document.body.appendChild(confetti);
-
-        setTimeout(() => confetti.remove(), 5000);
+        const neighbors = [];
+        const er = Math.floor(emptyIndex / 3), ec = emptyIndex % 3;
+        if (er > 0) neighbors.push(emptyIndex - 3);
+        if (er < 2) neighbors.push(emptyIndex + 3);
+        if (ec > 0) neighbors.push(emptyIndex - 1);
+        if (ec < 2) neighbors.push(emptyIndex + 1);
+        const rand = neighbors[Math.floor(Math.random() * neighbors.length)];
+        movePuzzlePiece(rand);
       }
+      document.getElementById("puzzleStatus").textContent = "Susun potongan foto kita!";
     }
+    document.getElementById("shuffleBtn").addEventListener("click", shufflePuzzle);
 
-    function showHint() {
-      puzzlePieces.forEach((piece, index) => {
-        if (!piece.classList.contains('empty')) {
-          const originalText = piece.textContent;
-          piece.textContent = index + 1;
-          piece.style.color = '#fff';
-          piece.style.backgroundColor = 'rgba(236, 64, 122, 0.8)';
-          setTimeout(() => {
-            piece.textContent = originalText;
-            piece.style.color = 'rgba(236, 64, 122, 0.9)';
-            piece.style.backgroundColor = '';
-          }, 2000);
-        }
-      });
-    }
-
-    document.getElementById('shuffleBtn').addEventListener('click', shufflePuzzle);
-    document.getElementById('hintBtn').addEventListener('click', showHint);
-
-    // Photobooth with Countdown
-    let stream = null;
-    let countdownInterval = null;
-
+    // --- PHOTOBOOTH ---
     async function initializeCamera() {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        document.getElementById('video').srcObject = stream;
-        document.getElementById('captureBtn').disabled = false;
-      } catch (error) {
-        console.error('Error accessing camera:', error);
-        alert('Tidak dapat mengakses kamera. Pastikan memberikan izin akses kamera.');
-      }
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        document.getElementById("video").srcObject = stream;
+        document.getElementById("captureBtn").disabled = false;
+      } catch (err) { console.log("Camera error/permission denied"); }
     }
-
-    function startCountdown() {
+    document.getElementById("captureBtn").addEventListener("click", () => {
       let count = 3;
-      const countdownEl = document.getElementById('countdown');
-      const captureBtn = document.getElementById('captureBtn');
-
-      countdownEl.classList.remove('hidden');
-      countdownEl.textContent = count;
-      captureBtn.disabled = true;
-
-      countdownInterval = setInterval(() => {
-        count--;
-        if (count > 0) {
-          countdownEl.textContent = count;
-        } else {
-          clearInterval(countdownInterval);
-          countdownEl.classList.add('hidden');
-          takePhoto();
+      const el = document.getElementById("countdown");
+      el.classList.remove("hidden"); el.textContent = count;
+      const timer = setInterval(() => {
+        count--; el.textContent = count;
+        if (count <= 0) {
+          clearInterval(timer); el.classList.add("hidden");
+          const vid = document.getElementById("video");
+          const cvs = document.getElementById("canvas");
+          cvs.width = vid.videoWidth; cvs.height = vid.videoHeight;
+          const ctx = cvs.getContext("2d");
+          ctx.drawImage(vid, 0, 0);
+          ctx.strokeStyle = "#ec407a"; ctx.lineWidth = 20; ctx.strokeRect(0, 0, cvs.width, cvs.height);
+          ctx.fillStyle = "#ec407a"; ctx.font = "bold 30px Arial"; ctx.textAlign = "center";
+          ctx.fillText("Happy Birthday!", cvs.width / 2, 50);
+          const link = document.createElement("a");
+          link.download = "foto-kita.png"; link.href = cvs.toDataURL(); link.click();
         }
       }, 1000);
-    }
+    });
 
-    function takePhoto() {
-      const video = document.getElementById('video');
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
-
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-
-      ctx.drawImage(video, 0, 0);
-
-      // Add frame
-      ctx.strokeStyle = '#ec407a';
-      ctx.lineWidth = 16;
-      ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-      // Add text
-      ctx.fillStyle = '#ec407a';
-      ctx.font = 'bold 24px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText('💕 Happy Birthday 💕', canvas.width / 2, 40);
-
-      const link = document.createElement('a');
-      link.download = `birthday-photo-${Date.now()}.png`;
-      link.href = canvas.toDataURL();
-      link.click();
-
-      document.getElementById('downloadBtn').classList.remove('hidden');
-      document.getElementById('captureBtn').disabled = false;
-    }
-
-    document.getElementById('captureBtn').addEventListener('click', startCountdown);
-
-    // Falling Photos Animation
-    function createFallingPhotos() {
-      const container = document.getElementById('fallingPhotos');
-      const photos = ['images/img1.jpg', 'images/img2.jpg', 'images/img3.jpg', 'images/img4.jpg', 'images/img5.jpg'];
-
-      setInterval(() => {
-        const photo = document.createElement('img');
-        photo.className = 'falling-photo';
-        photo.src = photos[Math.floor(Math.random() * photos.length)];
-
-        // Randomize properties
-        const size = 40 + Math.random() * 40; // 40-80px
-        const left = Math.random() * 100; // 0-100vw
-        const duration = 8 + Math.random() * 8; // 8-16s
-        const delay = Math.random() * 5; // 0-5s
-
-        photo.style.width = size + 'px';
-        photo.style.height = size + 'px';
-        photo.style.left = left + 'vw';
-        photo.style.animationDuration = duration + 's';
-        photo.style.animationDelay = delay + 's';
-
-        container.appendChild(photo);
-
-        // Remove photo when animation ends
-        setTimeout(() => {
-          if (photo.parentNode) {
-            photo.parentNode.removeChild(photo);
-          }
-        }, (duration + delay) * 1000 + 1000);
-      }, 2000); // Create new photo every 2 seconds
-    }
-
-    // Scrapbook functionality
-    const scrapbookPages = [
-      {
-        leftPhotos: ['images/img1.jpg', 'images/img2.jpg'],
-        rightPhotos: ['images/img3.jpg', 'images/img4.jpg']
-      },
-      {
-        leftPhotos: ['images/img5.jpg', 'images/img6.jpg'],
-        rightPhotos: []
-      }
-    ];
-
-    let currentPage = 0;
-    let isBookOpen = false;
-
-    function initializeScrapbook() {
-      const scrapbook = document.getElementById('scrapbook');
-
-      scrapbook.addEventListener('click', (e) => {
-        if (!isBookOpen) {
-          // Open the book
-          scrapbook.classList.add('open');
-          isBookOpen = true;
-          updatePageContent();
-        } else if (e.target.closest('.polaroid-photo')) {
-          // Turn to next page when clicking photo
-          scrapbook.classList.remove('open');
-          setTimeout(() => {
-            currentPage = (currentPage + 1) % scrapbookPages.length;
-            updatePageContent();
-            scrapbook.classList.add('open');
-          }, 1500); // Wait for close animation
-        }
-      });
-    }
-
-    function updatePageContent() {
-      const pageLeft = document.querySelector('.page-left');
-      const pageRight = document.querySelector('.page-right');
-
-      const page = scrapbookPages[currentPage];
-
-      pageLeft.innerHTML = `
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 20px;">
-          ${page.leftPhotos.map(src => `
-            <div class="polaroid-photo" style="width: 140px;">
-              <img src="${src}" alt="Memory">
-            </div>
-          `).join('')}
-        </div>
-      `;
-
-      if (page.rightPhotos.length > 0) {
-        pageRight.innerHTML = `
-          <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 20px;">
-            ${page.rightPhotos.map(src => `
-              <div class="polaroid-photo" style="width: 140px;">
-                <img src="${src}" alt="Memory">
-              </div>
-            `).join('')}
-          </div>
-        `;
-      } else {
-        pageRight.innerHTML = `
-          <div style="display: flex; justify-content: center; align-items: center; height: 100%; padding: 20px;">
-            <p class="handwriting" style="font-size: 24px; text-align: center;">Akhir dari album kita. Klik foto untuk kembali ke awal 💕</p>
-          </div>
-        `;
-      }
-    }
-
-    // Initialize everything
-    document.addEventListener('DOMContentLoaded', () => {
+    // --- MAIN INIT (Semua fungsi dijalankan di sini agar aman) ---
+    document.addEventListener("DOMContentLoaded", () => {
       createFallingPhotos();
       createFloatingHearts();
       animateGreeting();
       initializePuzzle();
       shufflePuzzle();
       initializeCamera();
-      initializeScrapbook();
-    });
+      initialize3DBook(); 
 
-    // Cleanup
-    window.addEventListener('beforeunload', () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
-      if (countdownInterval) {
-        clearInterval(countdownInterval);
+      // --- PERBAIKAN LOGIKA SENTER (Dimasukkan ke sini) ---
+      const secretSection = document.getElementById("secret");
+      const flashlightOverlay = document.getElementById("flashlightOverlay");
+
+      // Cek apakah elemen ada sebelum memasang event listener
+      if(secretSection && flashlightOverlay) {
+        secretSection.addEventListener("mousemove", (e) => {
+          const rect = secretSection.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          flashlightOverlay.style.setProperty("--cursor-x", x + "px");
+          flashlightOverlay.style.setProperty("--cursor-y", y + "px");
+        });
       }
     });
   </script>
-
-  <style>
-    @keyframes fall {
-      to { transform: translateY(100vh) rotate(720deg); }
-    }
-  </style>
 </body>
 </html>
